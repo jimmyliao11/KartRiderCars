@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>跑跑卡丁車台服車款大全 | Kart Rider TF Cars</title>
+        <script src="js/d3.min.js"></script>
+    </head>
+    <body>
+        <div>
+            資料來源: <a href="http://forum.gamer.com.tw/C.php?bsn=08936&snA=111676&tnum=15" target="_blank">【心得】台服車款大全 @跑跑卡丁車 哈啦板 - 巴哈姆特</a><br>
+        </div>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>世代</th>
+                    <th>類型</th>
+                    <th>名稱</th>
+                    <th>圖片</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+
+            </tbody>
+        </table>
+        <script>
+            var data; // a global
+            d3.csv("cars.csv", function (error, json) {
+                if (error)
+                    return console.warn(error);
+                data = json;
+
+
+                //填表格開始
+                var tbody = d3.select('#tbody');
+                tbody.selectAll('tr').remove();
+                var tr = tbody.selectAll('tr')
+                        .data(data).enter()
+                        .append('tr');
+                tr.selectAll('td')
+                        .data(function (d) {
+                            return [d.generation, d.type, d.name, d.image];
+                        }).enter()
+                        .append('td')
+                        .html(function (d, i) {
+                            if (i === 3) {
+                                return '<img src="img/' + d + '">';
+                            }
+                            return d;
+                        });
+                //填表格結束
+            });
+        </script>
+    </body>
+</html>
